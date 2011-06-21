@@ -15,7 +15,7 @@ Executable jobsender
   hs-source-dirs: src
   Build-Depends: base>4, mtl>2, jobqueue-common, jobqueue-client,
                  http-types, 
-                 http-enumerator < 0.6, madgraph-auto, 
+                 http-enumerator < 0.6, madgraph-auto, madgraph-auto-model,
                  bytestring, aeson, cmdargs
   ghc-options: 	-Wall -O2 -threaded -funbox-strict-fields -fno-warn-unused-do-bind
   ghc-prof-options: -caf-all -auto-all
@@ -25,7 +25,7 @@ Library
   ghc-options: 	-Wall -O2 -threaded -funbox-strict-fields -fno-warn-unused-do-bind
   ghc-prof-options: -caf-all -auto-all
   Build-Depends: base>4, containers, mtl>2, safecopy>0.5, acid-state>0.4, 
-                 jobqueue-common, jobqueue-client, parsec
+                 jobqueue-common, jobqueue-client, parsec, madgraph-auto-dataset
   Exposed-Modules: 
                    HEP.Automation.JobQueue.Sender.Type 
                    HEP.Automation.JobQueue.Sender.Command                 
