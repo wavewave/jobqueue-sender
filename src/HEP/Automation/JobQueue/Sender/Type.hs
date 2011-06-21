@@ -4,17 +4,12 @@ module HEP.Automation.JobQueue.Sender.Type where
 
 import System.Console.CmdArgs
 
-data JobClient = List   { queuetyp :: String, config :: String }
-               | Assign { jobid :: Int, config :: String} 
+data JobSender = Send  
                deriving (Show,Data,Typeable)
 
 
-list :: JobClient 
-list = List { queuetyp = "all" &= typ "QUEUETYP" &= argPos 0 
-            , config = "test.conf" } 
+send :: JobSender 
+send = Send
 
-assign :: JobClient 
-assign = Assign { jobid = def &= typ "JOBID" &= argPos 0
-                , config = "test.conf" }
 
-mode = modes [list, assign] 
+mode = modes [send]

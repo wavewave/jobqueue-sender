@@ -4,8 +4,8 @@ module Main where
 
 -- import System.Environment
 import System.Console.CmdArgs
-import HEP.Automation.JobQueue.Client.Command
-import HEP.Automation.JobQueue.Client.Type
+import HEP.Automation.JobQueue.Sender.Command
+import HEP.Automation.JobQueue.Sender.Type
 
 main = do 
 -- args <- getArgs
