@@ -1,5 +1,5 @@
 Name:		jobqueue-sender
-Version:	0.0.7.0
+Version:	0.0.8.0
 Synopsis:	job scheduler for event generation 
 Description: 	job scheduler for event generation
 License: 	BSD3
@@ -25,7 +25,8 @@ Library
   ghc-options: 	-Wall -O2 -threaded -funbox-strict-fields -fno-warn-unused-do-bind
   ghc-prof-options: -caf-all -auto-all
   Build-Depends: base>4, containers, mtl>2, safecopy>0.5, acid-state>0.4, 
-                 jobqueue-common, jobqueue-client, parsec, madgraph-auto-dataset
+                 jobqueue-common, jobqueue-client, parsec, 
+                 madgraph-auto-dataset
   Exposed-Modules: 
                    HEP.Automation.JobQueue.Sender.Type 
                    HEP.Automation.JobQueue.Sender.Command                 

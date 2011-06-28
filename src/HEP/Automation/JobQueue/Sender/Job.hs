@@ -10,25 +10,27 @@ import HEP.Automation.JobQueue.JobQueue
 
 import Data.Aeson.Encode
 
+import Control.Concurrent (threadDelay)
+
 import HEP.Automation.MadGraph.Dataset.Set20110621set1
 
 jobqueueSend :: IO ()
 jobqueueSend = do 
-  let jobdetails = map EventGen eventsets
+  let jobdetails = map (flip EventGen webdavdir) eventsets
   putStrLn $ "sending " ++ show (length eventsets) ++ " jobs"
-  mapM_ sendJob jobdetails
+  mapM_ (\x -> sendJob x >> threadDelay 1000000) jobdetails
 
 sendJob :: JobDetail -> IO () 
 sendJob jobdetail = do 
-  manager <- newManager 
-  requesttemp <- parseUrl "http://127.0.0.1:3600/queue"
-  let json = encode $ toAeson jobdetail 
-  let myrequestbody = RequestBodyLBS json 
-  let requestpost = requesttemp { method = methodPost, 
-                                  requestHeaders = [ ("Content-Type", "text/plain") ], 
-                                  requestBody = myrequestbody } 
-  r <- httpLbs requestpost manager 
-  putStrLn $ show r 
+  withManager $ \manager -> do  -- manager <- newManager 
+    requesttemp <- parseUrl "http://127.0.0.1:3600/queue"
+    let json = encode $ toAeson jobdetail 
+    let myrequestbody = RequestBodyLBS json 
+    let requestpost = requesttemp { method = methodPost, 
+                                    requestHeaders = [ ("Content-Type", "text/plain") ], 
+                                    requestBody = myrequestbody } 
+    r <- httpLbs requestpost manager 
+    putStrLn $ show r 
 
 
 
