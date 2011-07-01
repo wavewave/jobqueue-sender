@@ -15,7 +15,7 @@ Executable jobsender
   hs-source-dirs: src
   Build-Depends: base>4, mtl>2, jobqueue-common, jobqueue-client,
                  http-types, 
-                 http-enumerator < 0.6, madgraph-auto, madgraph-auto-model,
+                 http-enumerator > 0.6, madgraph-auto, madgraph-auto-model,
                  bytestring, aeson, cmdargs
   ghc-options: 	-Wall -O2 -threaded -funbox-strict-fields -fno-warn-unused-do-bind
   ghc-prof-options: -caf-all -auto-all
