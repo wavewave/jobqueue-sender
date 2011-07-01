@@ -12,7 +12,7 @@ import Data.Aeson.Encode
 
 import Control.Concurrent (threadDelay)
 
-import HEP.Automation.MadGraph.Dataset.Set20110628set1
+import HEP.Automation.MadGraph.Dataset.Set20110630set1
 
 jobqueueSend :: IO ()
 jobqueueSend = do 
