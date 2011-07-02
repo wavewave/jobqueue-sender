@@ -4,11 +4,13 @@ module HEP.Automation.JobQueue.Sender.Type where
 
 import System.Console.CmdArgs
 
-data JobSender = Send  
+type Url = String
+
+data JobSender = Send { config :: FilePath }
                deriving (Show,Data,Typeable)
 
 send :: JobSender 
-send = Send
+send = Send { config = "test.conf" }
 
 mode = modes [send]
 

@@ -12,18 +12,19 @@ import Data.Aeson.Encode
 
 import Control.Concurrent (threadDelay)
 
-import HEP.Automation.MadGraph.Dataset.Set20110628set1
+import HEP.Automation.JobQueue.Sender.Type
+import HEP.Automation.MadGraph.Dataset.Set20110701set1
 
-jobqueueSend :: IO ()
-jobqueueSend = do 
+jobqueueSend :: Url -> IO ()
+jobqueueSend url = do 
   let jobdetails = map (flip EventGen webdavdir) eventsets
   putStrLn $ "sending " ++ show (length eventsets) ++ " jobs"
-  mapM_ (\x -> sendJob x >> threadDelay 1000000) jobdetails
+  mapM_ (\x -> sendJob url x >> threadDelay 1000000) jobdetails
 
-sendJob :: JobDetail -> IO () 
-sendJob jobdetail = do 
+sendJob :: Url -> JobDetail -> IO () 
+sendJob url jobdetail = do 
   withManager $ \manager -> do  -- manager <- newManager 
-    requesttemp <- parseUrl "http://127.0.0.1:3600/queue"
+    requesttemp <- parseUrl (url ++ "/queue")
     let json = encode $ toAeson jobdetail 
     let myrequestbody = RequestBodyLBS json 
     let requestpost = requesttemp { method = methodPost, 
