@@ -13,7 +13,7 @@ import Data.Aeson.Encode
 import Control.Concurrent (threadDelay)
 
 import HEP.Automation.JobQueue.Sender.Type
-import HEP.Automation.MadGraph.Dataset.Set20110701set1
+import HEP.Automation.MadGraph.Dataset.Set20110702set1
 
 jobqueueSend :: Url -> IO ()
 jobqueueSend url = do 
