@@ -1,5 +1,5 @@
 Name:		jobqueue-sender
-Version:	20110705.1
+Version:	20110706.2
 Synopsis:	job scheduler for event generation 
 Description: 	job scheduler for event generation
 License: 	BSD3
