@@ -1,5 +1,5 @@
 Name:		jobqueue-sender
-Version:	20110707.2
+Version:	20110709.1
 Synopsis:	job scheduler for event generation 
 Description: 	job scheduler for event generation
 License: 	BSD3
@@ -13,7 +13,7 @@ Cabal-Version:  >= 1.2
 Executable jobsender
   Main-is: jobsender.hs
   hs-source-dirs: src
-  Build-Depends: base>4, mtl>2, jobqueue-common, jobqueue-client,
+  Build-Depends: base>4, mtl>2, jobqueue-common >= 0.1.1.0, jobqueue-client,
                  http-types, 
                  http-enumerator > 0.6, madgraph-auto, madgraph-auto-model,
                  bytestring, aeson, cmdargs
