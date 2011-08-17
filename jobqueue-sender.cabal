@@ -1,5 +1,5 @@
 Name:		jobqueue-sender
-Version:	20110713.5
+Version:	20110719.1
 Synopsis:	job scheduler for event generation 
 Description: 	job scheduler for event generation
 License: 	BSD3
@@ -16,7 +16,8 @@ Executable jobsender
   Build-Depends: base>4, mtl>2, jobqueue-common >= 0.1.1.0, jobqueue-client,
                  http-types, 
                  http-enumerator > 0.6, madgraph-auto, madgraph-auto-model,
-                 bytestring, aeson, cmdargs
+                 bytestring, aeson, cmdargs, filepath,
+                 ghc, ghc-paths, webdav-manager
   ghc-options: 	-Wall -O2 -threaded -funbox-strict-fields -fno-warn-unused-do-bind
   ghc-prof-options: -caf-all -auto-all
 
@@ -26,10 +27,12 @@ Library
   ghc-prof-options: -caf-all -auto-all
   Build-Depends: base>4, containers, mtl>2, safecopy>0.5, acid-state>0.4, 
                  jobqueue-common, jobqueue-client, parsec, 
-                 madgraph-auto-dataset, pipeline > 0.3
+                 pipeline > 0.3, filepath,
+                 ghc, ghc-paths, webdav-manager
   Exposed-Modules: 
                    HEP.Automation.JobQueue.Sender.Type 
                    HEP.Automation.JobQueue.Sender.Command                 
                    HEP.Automation.JobQueue.Sender.Job
+                   HEP.Automation.JobQueue.Sender.Plugins
 
 		 

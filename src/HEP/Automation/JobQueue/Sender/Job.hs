@@ -13,16 +13,21 @@ import Data.Aeson.Encode
 import Control.Concurrent (threadDelay)
 
 import HEP.Automation.JobQueue.Sender.Type
-import HEP.Automation.MadGraph.Dataset.Set20110713set5
 
-jobqueueSend :: Url -> IO ()
-jobqueueSend url = do 
-  -- let jobdetails = map (flip (MathAnal "atlas_lhco") webdavdir) eventsets
-  -- let jobdetails = map (flip (MathAnal "tev_reco") webdavdir) eventsets
-  let jobdetails = map (flip (MathAnal "tev_top_afb") webdavdir) eventsets
-  -- let jobdetails = map (flip EventGen webdavdir) eventsets  
+import HEP.Automation.JobQueue.Sender.Plugins
+
+jobqueueSend :: Url -> String -> String -> IO ()
+jobqueueSend url mname job = do 
+  (eventsets,webdavdir) <- pluginCompile mname 
+  jobdetails <- case job of
+                  "atlas_lhco"  -> return $ map (flip (MathAnal "atlas_lhco") webdavdir) eventsets
+                  "tev_reco"    -> return $ map (flip (MathAnal "tev_reco") webdavdir) eventsets
+                  "tev_top_afb" -> return $ map (flip (MathAnal "tev_top_afb") webdavdir) eventsets
+                  "tevpythia"   -> return $ map (flip (MathAnal "tevpythia") webdavdir) eventsets
+                  "eventgen"    -> return $ map (flip EventGen webdavdir) eventsets
+                  _ -> error "atlas_lhco tev_reco tev_top_afb tevpythia eventgen"
   putStrLn $ "sending " ++ show (length eventsets) ++ " jobs"
-  mapM_ (\x -> sendJob url x Urgent >> threadDelay 1000000) jobdetails
+  mapM_ (\x -> sendJob url x NonUrgent >> threadDelay 50000) jobdetails
 
 sendJob :: Url -> JobDetail -> JobPriority -> IO () 
 sendJob url jobdetail prior = do 
