@@ -7,6 +7,9 @@ import Network.HTTP.Enumerator
 
 import HEP.Automation.JobQueue.JobJson
 import HEP.Automation.JobQueue.JobQueue
+import HEP.Automation.JobQueue.JobType
+
+import HEP.Storage.WebDAV
 
 import Data.Aeson.Encode
 
@@ -14,11 +17,17 @@ import Control.Concurrent (threadDelay)
 
 import HEP.Automation.JobQueue.Sender.Type
 
-import HEP.Automation.JobQueue.Sender.Plugins
+import HEP.Util.GHC.Plugins
+
+import Unsafe.Coerce
+
+-- import HEP.Automation.JobQueue.Sender.Plugins
 
 jobqueueSend :: Url -> String -> String -> String -> IO ()
 jobqueueSend url datasetdir mname job = do 
-  (eventsets,webdavdir) <- pluginCompile datasetdir mname 
+  let fullmname = "HEP.Automation.MadGraph.Dataset." ++ mname
+  value <- pluginCompile datasetdir fullmname "(eventsets,webdavdir)" 
+  let (eventsets,webdavdir) = unsafeCoerce value :: ([EventSet],WebDAVRemoteDir)
   jobdetails <- case job of
                   "atlas_lhco"  -> return $ map (flip (MathAnal "atlas_lhco") webdavdir) eventsets
                   "tev_reco"    -> return $ map (flip (MathAnal "tev_reco") webdavdir) eventsets
