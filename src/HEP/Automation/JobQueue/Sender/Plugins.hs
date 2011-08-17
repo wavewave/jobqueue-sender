@@ -11,11 +11,11 @@ import HEP.Storage.WebDAV.Type
 import Control.Monad
 import System.FilePath
 
-pluginCompile :: String -> IO ([EventSet],WebDAVRemoteDir) 
-pluginCompile mname =  
+pluginCompile :: String -> String -> IO ([EventSet],WebDAVRemoteDir) 
+pluginCompile datasetdir mname =  
   defaultErrorHandler defaultDynFlags $ do 
     let modulename = "HEP.Automation.MadGraph.Dataset." ++ mname
-    let fp = "/Users/iankim/mac/prog/madgraph-auto-dataset/src/HEP/Automation/MadGraph/Dataset" </> mname ++ ".hs"
+    let fp = datasetdir </> "HEP/Automation/MadGraph/Dataset" </> mname ++ ".hs"
     func <- runGhc (Just libdir) $ do 
       dflags <- getSessionDynFlags
       setSessionDynFlags dflags

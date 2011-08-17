@@ -6,13 +6,15 @@ import HEP.Automation.JobQueue.Sender.Type
 import HEP.Automation.JobQueue.Sender.Job
 
 import HEP.Automation.Pipeline.Config
+import HEP.Automation.JobQueue.Config 
 
 commandLineProcess :: JobSender -> IO () 
 commandLineProcess (Send conf mname job) = do 
   putStrLn "send called"
   lc <- readConfigFile conf 
   let url = nc_jobqueueurl . lc_networkConfiguration $ lc 
-  jobqueueSend url mname job
+      datasetdir = datasetDir . lc_clientConfiguration $ lc 
+  jobqueueSend url datasetdir mname job
 
 
 

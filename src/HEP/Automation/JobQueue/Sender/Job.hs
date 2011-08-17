@@ -16,9 +16,9 @@ import HEP.Automation.JobQueue.Sender.Type
 
 import HEP.Automation.JobQueue.Sender.Plugins
 
-jobqueueSend :: Url -> String -> String -> IO ()
-jobqueueSend url mname job = do 
-  (eventsets,webdavdir) <- pluginCompile mname 
+jobqueueSend :: Url -> String -> String -> String -> IO ()
+jobqueueSend url datasetdir mname job = do 
+  (eventsets,webdavdir) <- pluginCompile datasetdir mname 
   jobdetails <- case job of
                   "atlas_lhco"  -> return $ map (flip (MathAnal "atlas_lhco") webdavdir) eventsets
                   "tev_reco"    -> return $ map (flip (MathAnal "tev_reco") webdavdir) eventsets
