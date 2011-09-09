@@ -18,5 +18,6 @@ send = Send { config = "test.conf"
             , whatjob = "" &= typ "JOBTYPE" &= argPos 1
             }
 
+mode :: JobSender
 mode = modes [send]
 
