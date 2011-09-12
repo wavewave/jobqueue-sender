@@ -15,6 +15,11 @@ commandLineProcess (Send conf mname job) = do
   let url = nc_jobqueueurl . lc_networkConfiguration $ lc 
       datasetdir = datasetDir . lc_clientConfiguration $ lc 
   jobqueueSend url datasetdir mname job
-
+commandLineProcess (ManySend conf mname) = do 
+  putStrLn "manysend called"
+  lc <- readConfigFile conf 
+  let url = nc_jobqueueurl . lc_networkConfiguration $ lc 
+      datasetdir = datasetDir . lc_clientConfiguration $ lc 
+  jobqueueManySend url datasetdir mname 
 
 
