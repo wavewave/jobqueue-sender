@@ -25,7 +25,8 @@ Executable jobsender
                  aeson == 0.4.*, 
                  cmdargs == 0.9.*, 
                  filepath,
-                 ghc, ghc-paths, webdav-manager
+                 ghc, ghc-paths, webdav-manager, 
+                 jobqueue-sender
   ghc-options: 	-Wall -O2 -threaded -funbox-strict-fields -fno-warn-unused-do-bind
   ghc-prof-options: -caf-all -auto-all
 
@@ -38,6 +39,7 @@ Library
                  mtl == 2.* , 
                  safecopy>0.5, 
                  acid-state == 0.4.*, 
+                 ghc-paths == 0.1.*,
                  jobqueue-common, 
                  jobqueue-client, 
                  parsec, 
