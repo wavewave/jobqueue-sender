@@ -3,7 +3,7 @@
 module HEP.Automation.JobQueue.Sender.Job where
 
 import Network.HTTP.Types
-import Network.HTTP.Enumerator
+import Network.HTTP.Conduit
 
 import HEP.Automation.JobQueue.JobJson
 import HEP.Automation.JobQueue.JobQueue
@@ -11,9 +11,11 @@ import HEP.Automation.JobQueue.JobType
 
 import HEP.Storage.WebDAV
 
+import Data.Aeson.Types
 import Data.Aeson.Encode
 
 import Control.Concurrent (threadDelay)
+import Control.Monad.Trans 
 
 import HEP.Automation.JobQueue.Sender.Type
 
@@ -48,14 +50,14 @@ sendJob url jobdetail prior = do
     requesttemp <- case prior of 
                      Urgent    -> parseUrl (url ++ "/queue/1")
                      NonUrgent -> parseUrl (url ++ "/queue/0")
-    let json = encode $ toAeson jobdetail 
+    let json = encode $ toJSON jobdetail 
     let myrequestbody = RequestBodyLBS json 
     let requestpost = requesttemp 
           { method = methodPost
           , requestHeaders = [ ("Content-Type", "text/plain") ]
           , requestBody = myrequestbody } 
     r <- httpLbs requestpost manager 
-    putStrLn $ show r 
+    liftIO $ putStrLn $ show r 
 
 
 jobqueueManySend :: Url -> String -> String -> IO ()
@@ -75,14 +77,14 @@ sendManyJob :: Url -> [(Int,JobInfo)] -> IO ()
 sendManyJob url manyjob = do 
   withManager $ \manager -> do  
     requesttemp <- parseUrl (url ++ "/queuemany")
-    let json = encode $ toAeson manyjob 
+    let json = encode $ toJSON manyjob 
     let myrequestbody = RequestBodyLBS json 
     let requestpost = requesttemp 
           { method = methodPost
           , requestHeaders = [ ("Content-Type", "text/plain") ]
           , requestBody = myrequestbody } 
     r <- httpLbs requestpost manager 
-    putStrLn $ show r 
+    liftIO $ putStrLn $ show r 
 
 
 
