@@ -30,6 +30,7 @@ Library
                    aeson, 
                    cmdargs > 0.9, 
                    containers, 
+                   directory,
                    filepath, 
                    ghc,
                    -- ghc-paths,

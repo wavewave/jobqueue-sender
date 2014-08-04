@@ -11,7 +11,8 @@ main :: IO ()
 main = do 
 -- args <- getArgs
   putStrLn "jobsender"
-  param <- cmdArgs mode 
+  -- print mode
+  param <- cmdArgs $ modes [send,manysend] 
 
   putStrLn $ show param 
 -- readConfigFile param 

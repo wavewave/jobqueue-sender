@@ -10,8 +10,15 @@ import HEP.Automation.EventGeneration.Config
 import HEP.Automation.JobQueue.Config 
 
 commandLineProcess :: JobSender -> IO () 
-commandLineProcess (Send conf mname job) = do 
+commandLineProcess (Send conf mname url) = do 
   putStrLn "send called"
+  mevgencfg <- getConfig conf
+  case mevgencfg of 
+    Nothing -> putStrLn "getConfig failed "
+    Just evgencfg -> do --  putStrLn "success"
+      jobqueueSend url mname
+      
+  -- print mevgencfg
 {-   lc <- readConfigFile conf 
   let url = nc_jobqueueurl . lc_networkConfiguration $ lc 
       datasetdir = datasetDir . lc_clientConfiguration $ lc 

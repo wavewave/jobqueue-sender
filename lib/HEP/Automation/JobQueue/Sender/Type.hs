@@ -8,22 +8,24 @@ type Url = String
 
 data JobSender = Send { config     :: FilePath 
                       , moduleName :: String
-                      , whatjob    :: String
+                      -- , whatjob    :: String
+                      , url :: String
                       }
                | ManySend { config :: FilePath
-                          , moduleName :: String }
+                          , moduleName :: String } 
                deriving (Show,Data,Typeable)
 
+-- mode = modes [CmdA, CmdB]
+
 send :: JobSender 
-send = Send { config = "test.conf" 
-            , moduleName = "" &= typ "MODULENAME" &= argPos 0
-            , whatjob = "" &= typ "JOBTYPE" &= argPos 1
+send = Send { config = "sender.conf" 
+            , moduleName = def &= typ "MODULENAME" &= argPos 0
+            , url = def &= typ "URL" &= argPos 1 
+            -- , whatjob = def &= typ "JOBTYPE" &= argPos 1
             }
 
 manysend :: JobSender 
-manysend = ManySend { config = "test.conf"
-                    , moduleName = "" &= typ "MODULENAME" &= argPos 0 } 
-
-mode :: JobSender
-mode = modes [send, manysend]
+manysend = ManySend { config = "sender.conf"
+                    , moduleName = def &= typ "MODULENAME" &= argPos 0 
+                    }
 

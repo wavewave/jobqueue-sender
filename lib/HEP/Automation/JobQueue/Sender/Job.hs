@@ -2,50 +2,41 @@
 
 module HEP.Automation.JobQueue.Sender.Job where
 
+-- other 
+import Control.Concurrent (threadDelay)
+import Control.Monad.Trans 
+import Data.Aeson.Types
+import Data.Aeson.Encode
 import Network.HTTP.Types
 import Network.HTTP.Conduit
-
+import System.Directory
+-- my platform
 import HEP.Automation.JobQueue.JobJson
 import HEP.Automation.JobQueue.JobQueue
 import HEP.Automation.JobQueue.JobType
-
 import HEP.Storage.WebDAV
-
-import Data.Aeson.Types
-import Data.Aeson.Encode
-
-import Control.Concurrent (threadDelay)
-import Control.Monad.Trans 
-
-import HEP.Automation.JobQueue.Sender.Type
-
 import HEP.Util.GHC.Plugins
-
+-- this package
+import HEP.Automation.JobQueue.Sender.Type
+-- extra
 import Unsafe.Coerce
 
--- import HEP.Automation.JobQueue.Sender.Plugins
 
-
-
-
-jobqueueSend :: Url -> String -> String -> String -> IO ()
-jobqueueSend url datasetdir mname job = do 
-  let fullmname = "HEP.Automation.MadGraph.Dataset." ++ mname
-  r <- pluginCompile datasetdir fullmname "(eventsets,webdavdir)" 
-  case r of 
+jobqueueSend :: Url -> String -> IO ()
+jobqueueSend url mname = do 
+  datasetdir <- getCurrentDirectory
+  r <- pluginCompile False datasetdir mname "(eventsets,webdavdir)" 
+  case r of
     Left err -> putStrLn err
-    Right value -> do 
+    Right value -> do
+      putStrLn "success interpreting !"
       let (eventsets,webdavdir) = unsafeCoerce value :: ([EventSet],WebDAVRemoteDir)
+
       putStrLn $ show (eventsets,webdavdir) 
-      jobdetails <- case job of
-                      "atlas_lhco"  -> return $ map (flip (MathAnal "atlas_lhco") webdavdir) eventsets
-                      "tev_reco"    -> return $ map (flip (MathAnal "tev_reco") webdavdir) eventsets
-                      "tev_top_afb" -> return $ map (flip (MathAnal "tev_top_afb") webdavdir) eventsets
-                      "tevpythia"   -> return $ map (flip (MathAnal "tevpythia") webdavdir) eventsets
-                      "eventgen"    -> return $ map (flip EventGen webdavdir) eventsets
-                      _ -> error "atlas_lhco tev_reco tev_top_afb tevpythia eventgen"
+      let jobdetails = map (flip EventGen webdavdir) eventsets
       putStrLn $ "sending " ++ show (length eventsets) ++ " jobs"
       mapM_ (\x -> sendJob url x NonUrgent >> threadDelay 50000) jobdetails 
+
 
 sendJob :: Url -> JobDetail -> JobPriority -> IO () 
 sendJob url jobdetail prior = do 
@@ -63,10 +54,10 @@ sendJob url jobdetail prior = do
     liftIO $ putStrLn $ show r 
 
 
-jobqueueManySend :: Url -> String -> String -> IO ()
-jobqueueManySend url datasetdir mname = do 
-  let fullmname = "HEP.Automation.MadGraph.Dataset." ++ mname
-  r <- pluginCompile datasetdir fullmname "(manyjobs,webdavdir)" 
+jobqueueManySend :: Url -> String -> IO ()
+jobqueueManySend url mname = do 
+  datasetdir <- getCurrentDirectory
+  r <- pluginCompile False datasetdir mname "(manyjobs,webdavdir)" 
   case r of 
     Left err -> putStrLn err
     Right value -> do 
