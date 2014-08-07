@@ -1,5 +1,19 @@
 {-# LANGUAGE OverloadedStrings #-}
 
+-----------------------------------------------------------------------------
+-- |
+-- Module      : HEP.Automation.JobQueue.Sender.Job
+-- Copyright   : (c) 2011, 2012, 2014 Ian-Woo Kim
+--
+-- License     : BSD3
+-- Maintainer  : Ian-Woo Kim <ianwookim@gmail.com>
+-- Stability   : experimental
+-- Portability : GHC
+--
+-- 
+-- 
+-----------------------------------------------------------------------------
+
 module HEP.Automation.JobQueue.Sender.Job where
 
 -- other 
@@ -11,6 +25,7 @@ import Network.HTTP.Types
 import Network.HTTP.Conduit
 import System.Directory
 -- my platform
+import HEP.Automation.EventGeneration.Type
 import HEP.Automation.JobQueue.JobJson
 import HEP.Automation.JobQueue.JobQueue
 import HEP.Automation.JobQueue.JobType
