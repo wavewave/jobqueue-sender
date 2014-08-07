@@ -68,7 +68,7 @@ sendJob url jobdetail prior = do
     r <- httpLbs requestpost manager 
     liftIO $ putStrLn $ show r 
 
-
+{- 
 jobqueueManySend :: Url -> String -> IO ()
 jobqueueManySend url mname = do 
   datasetdir <- getCurrentDirectory
@@ -95,5 +95,5 @@ sendManyJob url manyjob = do
     r <- httpLbs requestpost manager 
     liftIO $ putStrLn $ show r 
 
-
+-}
 

@@ -11,20 +11,14 @@ import HEP.Automation.JobQueue.Config
 
 commandLineProcess :: JobSender -> IO () 
 commandLineProcess (Send conf mname url) = do 
-  putStrLn "send called"
   mevgencfg <- getConfig conf
   case mevgencfg of 
     Nothing -> putStrLn "getConfig failed "
-    Just evgencfg -> do --  putStrLn "success"
-      jobqueueSend url mname
-      
-  -- print mevgencfg
-{-   lc <- readConfigFile conf 
-  let url = nc_jobqueueurl . lc_networkConfiguration $ lc 
-      datasetdir = datasetDir . lc_clientConfiguration $ lc 
-  jobqueueSend url datasetdir mname job -}
+    Just evgencfg -> jobqueueSend url mname
 commandLineProcess (ManySend conf mname) = do 
-  putStrLn "manysend called"
+  putStrLn "not support many send at this time"
+
+
 {-   lc <- readConfigFile conf 
   let url = nc_jobqueueurl . lc_networkConfiguration $ lc 
       datasetdir = datasetDir . lc_clientConfiguration $ lc 

@@ -1,4 +1,4 @@
-module TestModule where
+module TestModuleMany where
 
 import HEP.Automation.EventGeneration.Type
 import HEP.Automation.JobQueue.JobType
@@ -18,8 +18,8 @@ psetup = PS { model = SM
 param :: ModelParam SM
 param = SMParam
 
-rsetup :: RunSetup 
-rsetup = 
+rsetupgen  :: Int -> RunSetup 
+rsetupgen x = 
     RS { numevent = 10000 
        , machine  = LHC7 ATLAS
        , rgrun    = Auto 
@@ -30,11 +30,11 @@ rsetup =
        , lhesanitizer  = []
        , pgs      = RunPGS (AntiKTJet 0.4, WithTau)
        , uploadhep = NoUploadHEP
-       , setnum   = 1 
+       , setnum   = x 
        }
 
 eventsets :: [EventSet]
-eventsets = [ EventSet psetup param rsetup ] 
+eventsets = [ EventSet psetup param (rsetupgen x) | x <- [2..10] ] 
 
 webdavdir :: WebDAVRemoteDir
 webdavdir = WebDAVRemoteDir "newtest"
